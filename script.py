@@ -29,15 +29,23 @@ async def gestisci_client(reader, writer):
 
             elif comando == "LED ON":
                 led_status = True
+                risposta = "LED ACCESO\n"
 
             elif comando == "LED OFF":
                 led_status = False
+                risposta = "LED SPENTO\n"
 
             elif comando == "STATO":
                 risposta = f"OK, Temperatura: {temp}, Umidità: {umidita}, Led_Status: {led_status} C\n"
 
             elif comando == "QUIT":
                 break
+
+            else:
+                risposta = "ERR Comando non riconosciuto\n"
+
+            writer.write(risposta.encode())
+            await writer.drain()
     except ConnectionError:
         pass                                 # il client è caduto all'improvviso
     finally:
